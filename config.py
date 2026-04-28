@@ -17,8 +17,8 @@ COLORS = {
 
 # API Configuration
 API_TIMEOUTS = {
-    "apify": 60,               # 60 seconds for Apify
-    "openai": 30,              # 30 seconds for OpenAI
+    "apify": 60,
+    "openai": 30,
 }
 
 # Pricing
