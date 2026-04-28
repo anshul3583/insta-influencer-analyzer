@@ -4,7 +4,7 @@ Instagram Influencer Analyzer - SaaS Application with Stripe Payments
 
 import streamlit as st
 from modules.stripe_handler import get_stripe_handler
-from modules.user_manager import UserManager
+from modules.persistent_user_manager import PersistentUserManager, show_persistent_debug_panel
 from modules.payment_ui import show_payment_prompt, check_and_handle_payment_redirect
 import urllib.parse
 
@@ -46,7 +46,7 @@ st.markdown("""
 # ============================================================================
 
 # Initialize managers
-user_manager = UserManager()
+user_manager = PersistentUserManager()
 try:
     stripe_handler = get_stripe_handler()
 except Exception as e:
@@ -109,15 +109,21 @@ with st.sidebar:
 
     st.markdown("---")
 
-    # Debug info (can be removed in production)
+    # Debug info
     if st.checkbox("🔍 Debug Info"):
         st.code(f"""
 User ID: {user_id}
+Browser ID: {user_manager.get_browser_id()[:8]}...
 Analyses: {user_manager.get_analysis_count()}
 Comparisons: {user_manager.get_comparison_count()}
 Is Paid: {user_manager.is_paid()}
+Storage: ✅ Persistent (Hybrid)
 Session: {user_manager.get_session_summary()}
         """)
+
+    # Advanced storage debugging
+    if st.checkbox("🔧 Storage Debug"):
+        show_persistent_debug_panel()
 
 # ============================================================================
 # MAIN HEADER
